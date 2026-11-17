@@ -1,0 +1,36 @@
+---
+// Phone-only bottom bar «Подзвонити / Маршрут». Space for it is reserved under the footer, so it never covers content.
+import { routeUrl } from "../data/site";
+---
+<div class="bar on-ink" data-rec="R-105,R-114,MA-R004,G-R002">
+  <button class="btn btn--call bar__call" type="button" popovertarget="call-pop">
+    <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.2 15.2 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z"/></svg>
+    Подзвонити
+  </button>
+  <a class="btn btn--outline bar__route" href={routeUrl} target="_blank" rel="noopener">Маршрут<span class="visually-hidden"> (Google Maps, нова вкладка)</span></a>
+</div>
+
+<style>
+  .bar {
+    position: fixed; inset: auto 0 0 0; z-index: 40;
+    display: grid; grid-template-columns: 1.4fr 1fr; gap: var(--s-1);
+    height: calc(var(--bar-h) + env(safe-area-inset-bottom)); padding: 12px var(--space) calc(12px + env(safe-area-inset-bottom));
+    transition: transform 240ms var(--ease-out);
+  }
+  .bar .btn { min-height: var(--tap); }
+  /* Effect 4: the bar slides in once the hero number block has left the screen. */
+  :global(.js) .bar:not(.is-shown) { transform: translateY(100%); }
+  @media (min-width: 768px) { .bar { display: none; } }
+</style>
+
+<script>
+  const bar = document.querySelector<HTMLElement>(".bar");
+  const target = document.getElementById("hero-numbers");
+  const menu = document.getElementById("menu");
+  let past = false, menuOpen = false;
+  const sync = () => bar?.classList.toggle("is-shown", past && !menuOpen);
+  if (bar && target && "IntersectionObserver" in window) {
+    new IntersectionObserver(([e]) => { past = !e.isIntersecting && e.boundingClientRect.top < 0; sync(); }).observe(target);
+  } else { past = true; sync(); }
+  menu?.addEventListener("toggle", (e) => { menuOpen = (e as ToggleEvent).newState === "open"; sync(); });
+</script>

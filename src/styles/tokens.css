@@ -1,0 +1,72 @@
+/* Hallmark · shape: signboard (number block → service index rows → brand statements → asymmetric facts → form panel → address rhyme) · genre: modern-minimal · theme: custom · job: book+visit · idea: "Один номер 661 72 72 і весь цикл ремонту на Електриків, 10 — головна як вивіска сервісу" · vibe: "фірмовий синій, сигнальний номер, вказівник цеху"
+ * paper: #F3F5F8 (hero/contacts — brand #1C3F8C, brands/footer — ink #0C1A2E) · accent: #B9E52F (call only) · display: Geologica · body: IBM Plex Sans · hero: "H1 + лід зліва/справа, під ними номерний блок: три клавіші операторів стовпчиком і хвіст 661 72 72 на всю ширину" · nav: sticky bar, 4 anchors + number popover + outline «Записатися»; 390 — call key + burger · footer: quiet ink, contacts + future sections · imagery: none (typography and colour fields; client logo too small, wordmark) · signature: three operator codes stacked next to the huge shared tail 661 72 72 — the number is the sign and the call button
+ * axes: mid/geometric-sans/chromatic-lime · posture: committed (brand-surface: blue as whole screens) · contrast: pass · fold: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H5 E4 S5 R4 V4 · weakest: E (no client photos), typography and colour fields carry the page instead of weak images */
+/* Hallmark · waive 39b · button.tail 180px, .btn--lg 56px · concept.md §8.11: call keys and buttons 56/48px for one-tap calls on the phone; the tail 661 72 72 is the signature itself, not a marketing button */
+/* Hallmark · waive F19 · 400/500/600 body + 800 display · concept.md §8.3 fixes IBM Plex Sans 400/500/600 and Geologica 700–800 */
+/* Client design tokens from design/concept.md §8.2–8.4 (veon-concept: colors, fonts). */
+:root {
+  /* colour roles */
+  --color-bg: #F3F5F8;
+  --color-surface: #FBFCFE;
+  --color-text: #0C1A2E;
+  --color-ink: #0C1A2E;
+  --color-muted: #48566B;
+  --color-brand: #1C3F8C;
+  --color-on-brand: #F5F8FF;
+  --color-on-brand-muted: #C3D0EE;
+  --color-accent: #B9E52F;
+  --color-brand-tint: #DCE4F5;
+  --color-line-strong: #748196;
+  --color-danger: #B42318;
+  --color-focus: var(--color-brand);
+  --color-accent-ink: #0C1A2E;
+  --color-line-on-dark: rgb(245 248 255 / .18);
+  --color-hover-on-dark: rgb(245 248 255 / .1);
+  --color-backdrop: rgb(12 26 46 / .4);
+  --shadow-panel: 0 1px 0 rgb(12 26 46 / .06), 0 12px 32px rgb(12 26 46 / .06);
+  --shadow-pop: 0 16px 48px rgb(12 26 46 / .3);
+
+  /* type */
+  --font-display: "Geologica Variable", "Geologica", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", system-ui, sans-serif;
+  --fs-tail: clamp(3rem, 0.84rem + 12.95vw, 12.5rem);
+  --fs-statement: clamp(2.5rem, 0.99rem + 7.24vw, 7.5rem);
+  --fs-fact-xl: clamp(3.5rem, 1.53rem + 12.19vw, 12.5rem);
+  --fs-fact-l: clamp(3rem, 2.01rem + 6.1vw, 7.5rem);
+  --fs-fact-m: clamp(2.25rem, 1.94rem + 2.29vw, 4rem);
+  --fs-h1: clamp(2.5rem, 1.55rem + 4.95vw, 6rem);
+  --fs-h2: clamp(2rem, 1.6rem + 2.67vw, 4rem);
+  --fs-h3: clamp(1.625rem, 1.29rem + 1.9vw, 3rem);
+  --fs-lead: clamp(1.125rem, 1.03rem + 0.38vw, 1.375rem);
+  --fs-body: clamp(1rem, 0.95rem + 0.19vw, 1.125rem);
+  --fs-small: 0.9375rem;
+  --track-display: -0.02em;
+
+  /* space: 8-step rhythm */
+  --s-1: 0.5rem;
+  --s-2: 1rem;
+  --s-3: 1.5rem;
+  --s-4: 2rem;
+  --s-6: 3rem;
+  --s-8: 4rem;
+  --s-12: 6rem;
+  --s-16: 8rem;
+  --section-y: clamp(4.5rem, 2.83rem + 6.86vw, 9rem);
+  --gap: clamp(1rem, 0.77rem + 0.76vw, 1.5rem);
+  --space: clamp(1.25rem, -0.1rem + 5.6vw, 5rem);
+  --container: 1360px;
+  --header-h: 56px;
+  --bar-h: 72px;
+
+  /* shape + motion */
+  --radius: 4px;
+  --border: 2px;
+  --tap: 48px;
+  --ease-out: cubic-bezier(.2, .7, .2, 1);
+  --dur: 600ms;
+  --dur-fast: 200ms;
+}
+@media (min-width: 1024px) {
+  :root { --header-h: 72px; }
+}

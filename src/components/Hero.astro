@@ -1,0 +1,55 @@
+---
+import NumberBlock from "./NumberBlock.astro";
+import { address } from "../data/site";
+---
+<section id="hero" class="hero on-brand" data-rec="R-101,R-102,S-R005,MA-R004,G-R002">
+  <div class="container hero__inner">
+    <div class="hero__head">
+      <h1 class="hero__h1" data-rec="R-013">СТО повного циклу на&nbsp;Подолі</h1>
+      <p class="hero__lead lead">
+        Ремонт і ТО, автоелектрика, кузов, догляд і шиномонтаж — в одному цеху на
+        <a href="#contacts">{address.street}</a>. Окремі напрями — Toyota/Lexus і Mercedes.
+      </p>
+    </div>
+
+    <NumberBlock id="hero-numbers" animate />
+
+    <div class="hero__foot">
+      <a class="btn btn--outline btn--lg hero__book" href="#booking">Записатися на сервіс</a>
+      <ul class="hero__notes small">
+        <li>Консультація безкоштовна</li>
+        <li>Наразі не обслуговуємо авто, старші за 2006 рік випуску</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero { padding-block: var(--s-4) var(--s-6); }
+  .hero__inner { display: grid; gap: var(--s-4); }
+  .hero__h1 { font-size: var(--fs-h1); line-height: 1; font-weight: 800; max-width: 11ch; }
+  .hero__lead { margin-top: var(--s-2); color: var(--color-on-brand-muted); max-width: 34rem; }
+  .hero__lead a { color: var(--color-on-brand); text-decoration-thickness: 1px; text-underline-offset: .2em; }
+  .hero__lead a:hover { text-decoration-color: var(--color-accent); }
+  .hero__foot { display: grid; gap: var(--s-3); }
+  .hero__book { width: 100%; }
+  .hero__notes { display: grid; gap: var(--s-1); color: var(--color-on-brand-muted); }
+  .hero__notes li { display: flex; gap: var(--s-1); align-items: baseline; }
+  .hero__notes li::before { content: ""; flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--color-on-brand-muted); transform: translateY(-1px); }
+  .hero__notes li:first-child::before { background: var(--color-accent); }
+
+  @media (min-width: 768px) {
+    .hero__foot { grid-template-columns: auto 1fr; align-items: center; gap: var(--s-4); }
+    .hero__book { width: auto; }
+    .hero__notes { grid-auto-flow: column; justify-content: start; gap: var(--s-4); }
+  }
+  @media (min-width: 1024px) {
+    .hero { padding-block: var(--s-8) var(--s-8); min-height: calc(100svh - var(--header-h)); display: flex; align-items: center; }
+    .hero__inner { gap: var(--s-6); width: min(100% - 2 * var(--space), var(--container)); }
+    .hero__head {
+      display: grid; grid-template-columns: repeat(12, 1fr); column-gap: var(--gap); align-items: end;
+    }
+    .hero__h1 { grid-column: 1 / span 8; max-width: none; }
+    .hero__lead { grid-column: 9 / span 4; margin: 0; padding-bottom: .6em; }
+  }
+</style>

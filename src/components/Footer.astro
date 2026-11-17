@@ -1,0 +1,51 @@
+---
+import FutureLink from "./FutureLink.astro";
+import { brand, phones, email, address, futureSections, futureNote } from "../data/site";
+---
+<footer class="footer on-ink">
+  <div class="container footer__grid">
+    <div class="footer__brand">
+      <a class="footer__mark" href="#top">{brand}</a>
+      <p class="muted">СТО повного циклу на Подолі</p>
+    </div>
+    <div class="footer__col">
+      <p class="footer__label">Адреса</p>
+      <p>{address.street}<br />{address.postal}, {address.city}, {address.district}</p>
+      <a href={`mailto:${email}`}>{email}</a>
+    </div>
+    <div class="footer__col">
+      <p class="footer__label">Телефони</p>
+      <ul>
+        {phones.map((p) => <li><a class="num" href={`tel:${p.tel}`}>{p.display}</a> <span class="muted small">{p.operator}</span></li>)}
+      </ul>
+    </div>
+    <nav class="footer__col footer__nav" aria-label="Розділи сайту">
+      <p class="footer__label">Розділи</p>
+      <ul>
+        {futureSections.map((s) => <li><FutureLink note={futureNote}>{s}</FutureLink></li>)}
+      </ul>
+    </nav>
+    <p class="footer__copy small muted">© {new Date().getFullYear()} {brand}</p>
+  </div>
+</footer>
+
+<style>
+  .footer { padding-block: var(--s-8) var(--s-4); font-size: var(--fs-small); }
+  .footer__grid { display: grid; gap: var(--s-4); }
+  .footer__mark { font-family: var(--font-display); font-weight: 800; font-size: 1.5rem; letter-spacing: -0.03em; text-decoration: none; display: inline-flex; min-height: var(--tap); align-items: center; }
+  .footer__label { font-weight: 600; color: var(--color-on-brand-muted); margin-bottom: var(--s-1); }
+  .footer__col { display: grid; align-content: start; gap: var(--s-1); }
+  .footer__col a { display: inline-flex; align-items: center; min-height: 32px; text-underline-offset: .2em; }
+  .footer__col ul { display: grid; gap: 4px; }
+  .footer__nav ul { grid-template-columns: 1fr 1fr; column-gap: var(--s-3); }
+  .footer__copy { padding-top: var(--s-3); border-top: 1px solid var(--color-line-on-dark); }
+  @media (min-width: 1024px) {
+    .footer__grid { grid-template-columns: repeat(12, 1fr); column-gap: var(--gap); }
+    .footer__brand { grid-column: 1 / span 3; }
+    .footer__col:nth-of-type(2) { grid-column: 4 / span 3; }
+    .footer__col:nth-of-type(3) { grid-column: 7 / span 2; }
+    .footer__nav { grid-column: 9 / span 4; }
+    .footer__copy { grid-column: 1 / -1; }
+  }
+  @media (max-width: 767px) { .footer { padding-bottom: calc(var(--s-4) + var(--bar-h)); } }
+</style>

@@ -1,0 +1,57 @@
+---
+import FutureLink from "./FutureLink.astro";
+import { futureNote } from "../data/site";
+const lines = [
+  { name: "Toyota / Lexus", note: "Окремий напрям ремонту", link: "Ремонт Toyota/Lexus" },
+  { name: "Mercedes", note: "Окремий напрям ремонту", link: "Ремонт Mercedes" },
+  { name: "Броньовані авто", note: "Ремонт броньованих автомобілів", link: "Про ремонт броньованих авто" },
+];
+---
+<section id="brands" class="brands on-ink" data-rec="R-108">
+  <div class="container">
+    <div class="brands__head">
+      <h2 class="h2">Спеціалізація</h2>
+      <p class="lead muted">Ремонтуємо автомобілі всіх марок. А для цих трьох у нас окремі напрями.</p>
+    </div>
+
+    <ul class="brands__list">
+      {lines.map((l, i) => (
+        <li class="brand">
+          <h3 class="brand__name" data-reveal="wipe" style={`--reveal-delay:${i * 90}ms`}>{l.name}</h3>
+          <div class="brand__side">
+            <p>{l.note}</p>
+            <FutureLink note={futureNote} class="brand__more">{l.link}</FutureLink>
+          </div>
+        </li>
+      ))}
+    </ul>
+
+    <div class="brands__cta">
+      <p class="lead">Маєте одну з цих машин? Розкажіть, що з нею, — підкажемо по телефону.</p>
+      <button class="btn btn--call btn--lg" type="button" popovertarget="call-pop">Подзвонити</button>
+    </div>
+  </div>
+</section>
+
+<style>
+  .brands { padding-block: var(--section-y); }
+  .brands__head { display: grid; gap: var(--s-2); margin-bottom: var(--s-8); }
+  .brands__head .lead { max-width: 30rem; }
+  .brands__list { display: grid; }
+  .brand { display: grid; gap: var(--s-1); padding-block: var(--s-4); border-top: 1px solid var(--color-line-on-dark); }
+  .brand:last-child { border-bottom: 1px solid var(--color-line-on-dark); }
+  .brand__name { font-size: var(--fs-statement); line-height: .95; font-weight: 800; letter-spacing: -0.035em; padding-bottom: .06em; }
+  .brand__side { display: grid; gap: var(--s-1); justify-items: start; color: var(--color-on-brand-muted); }
+  .brand__side :global(.brand__more) { font-size: var(--fs-small); color: var(--color-on-brand); }
+  .brands__cta { display: grid; gap: var(--s-3); justify-items: start; margin-top: var(--s-8); max-width: 40rem; }
+
+  @media (min-width: 1024px) {
+    .brands__head { grid-template-columns: repeat(12, 1fr); column-gap: var(--gap); align-items: end; }
+    .brands__head .h2 { grid-column: 1 / span 6; }
+    .brands__head .lead { grid-column: 8 / span 5; }
+    .brand { grid-template-columns: repeat(12, 1fr); column-gap: var(--gap); align-items: end; padding-block: var(--s-6); }
+    .brand__name { grid-column: 1 / span 9; }
+    .brand__side { grid-column: 10 / span 3; padding-bottom: .4rem; }
+    .brands__cta { grid-template-columns: 1fr auto; align-items: center; max-width: none; gap: var(--s-6); margin-left: calc((100% + var(--gap)) / 12 * 6); }
+  }
+</style>

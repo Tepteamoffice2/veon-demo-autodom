@@ -1,0 +1,77 @@
+---
+// Signature: three operator keys (each a direct tel: link) + the shared tail 661 72 72 (opens the operator choice).
+import { phones, tail } from "../data/site";
+interface Props { id?: string; animate?: boolean; rec?: string; }
+const { id, animate = false, rec } = Astro.props;
+---
+<div class:list={["numblock", { "numblock--animate": animate }]} id={id} data-rec={rec}>
+  <ul class="keys" aria-label="Подзвонити оператору">
+    {phones.map((p, i) => (
+      <li style={`--i:${i}`}>
+        <a class="key" href={`tel:${p.tel}`} aria-label={`Подзвонити: ${p.operator}, ${p.display}`}>
+          <span class="key__code num">{p.code}</span>
+          <span class="key__op">{p.operator}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+  <button class="tail num" type="button" popovertarget="call-pop" aria-label={`${tail} — обрати оператора і подзвонити`}>
+    {tail}
+  </button>
+</div>
+
+<style>
+  .numblock {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--s-2);
+  }
+  .tail {
+    order: -1;
+    justify-self: start;
+    background: none; border: 0; padding: 0; margin: 0;
+    font-family: var(--font-display); font-weight: 800; font-size: min(var(--fs-tail), 18vw);
+    line-height: .9; letter-spacing: -0.035em; white-space: nowrap;
+    color: inherit; cursor: pointer;
+    text-decoration: underline; text-decoration-thickness: .04em; text-underline-offset: .12em;
+    text-decoration-color: transparent;
+    transition: text-decoration-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+  }
+  .tail:hover { text-decoration-color: var(--color-accent); }
+  .tail:active { transform: scale(.99); }
+  .keys {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-1);
+  }
+  .key {
+    display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 2px;
+    min-height: 60px; padding: var(--s-1) var(--s-2);
+    background: var(--color-accent); color: var(--color-accent-ink);
+    border-radius: var(--radius); text-decoration: none;
+    transition: background-color var(--dur-fast) var(--ease-out), transform 120ms var(--ease-out);
+  }
+  .key:hover { background: var(--color-on-brand); }
+  .key:active { transform: scale(.98); }
+  .key__code { font-family: var(--font-display); font-weight: 800; font-size: 1.5rem; line-height: 1; letter-spacing: -0.01em; }
+  .key__op { font-size: .8125rem; font-weight: 500; line-height: 1.2; }
+
+  @media (min-width: 1024px) {
+    .numblock { --tail: min(var(--fs-tail), calc((100vw - 2 * var(--space) - 16rem) / 4.8)); grid-template-columns: auto 1fr; align-items: center; gap: var(--s-4); }
+    .tail { order: 0; font-size: var(--tail); }
+    .keys { grid-template-columns: 1fr; gap: var(--s-1); }
+    .key { flex-direction: row; align-items: baseline; justify-content: space-between; gap: var(--s-3); min-width: 13rem; min-height: 0; height: calc((var(--tail) * .9 - 16px) / 3); min-height: 48px; padding: 0 var(--s-2); align-items: center; }
+    .key__code { font-size: clamp(1.5rem, 1rem + 1vw, 2rem); }
+    .key__op { font-size: var(--fs-small); }
+  }
+
+  /* Effect 1: operator keys rise one by one (H1 and the tail stay static, LCP is not delayed). */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.js) .numblock--animate .key { animation: key-rise 360ms var(--ease-out) both; animation-delay: calc(200ms + var(--i) * 60ms); }
+  }
+  @media (prefers-reduced-motion: no-preference) and (max-width: 1023px) {
+    :global(.js) .numblock--animate .key { animation-delay: 150ms; }
+  }
+  @keyframes key-rise {
+    from { opacity: 0; transform: translateY(-12px); }
+    to { opacity: 1; transform: none; }
+  }
+</style>

@@ -1,0 +1,47 @@
+---
+import Base from "../layouts/Base.astro";
+import Header from "../components/Header.astro";
+import Hero from "../components/Hero.astro";
+import Services from "../components/Services.astro";
+import Brands from "../components/Brands.astro";
+import Facts from "../components/Facts.astro";
+import Booking from "../components/Booking.astro";
+import Contacts from "../components/Contacts.astro";
+import Footer from "../components/Footer.astro";
+import MobileBar from "../components/MobileBar.astro";
+import CallPopover from "../components/CallPopover.astro";
+import { brand, phones, email } from "../data/site";
+
+const title = "СТО на Подолі, Київ — ремонт і ТО авто | АвтоДом";
+const description = "СТО повного циклу на Подолі: ремонт і ТО, автоелектрика, кузов, детейлінг, шиномонтаж. Окремо — Toyota/Lexus і Mercedes. Вул. Електриків, 10, Київ.";
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "AutoRepair",
+  name: brand,
+  description: "СТО повного циклу на Подолі: ремонт і ТО, автоелектрика, кузовний ремонт, догляд, шиномонтаж.",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "вул. Електриків, 10",
+    addressLocality: "Київ",
+    postalCode: "04071",
+    addressCountry: "UA",
+  },
+  telephone: phones.map((p) => p.tel),
+  email,
+  areaServed: { "@type": "City", name: "Київ" },
+};
+---
+<Base lang="uk" title={title} description={description}>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  <Header slot="header" />
+  <Hero />
+  <Services />
+  <Brands />
+  <Facts />
+  <Booking />
+  <Contacts />
+  <Footer slot="footer" />
+  <MobileBar slot="footer" />
+  <CallPopover slot="footer" />
+</Base>

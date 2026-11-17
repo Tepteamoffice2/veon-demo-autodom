@@ -1,0 +1,69 @@
+---
+const discounts = [
+  { v: "−10%", l: "на послуги сервісу" },
+  { v: "−5%", l: "на запчастини" },
+  { v: "−20%", l: "на мийку" },
+];
+---
+<section id="service-facts" class="facts" data-rec="R-108,R-115">
+  <div class="container">
+    <h2 class="h2 facts__h2">Про сервіс — без гучних слів</h2>
+
+    <div class="facts__big">
+      <div class="fact fact--xl">
+        <p class="fact__value num" data-reveal="wipe">1500&nbsp;м²</p>
+        <p class="fact__label">виробничих приміщень сервісу</p>
+      </div>
+      <div class="fact fact--l">
+        <p class="fact__value num" data-reveal="wipe" style="--reveal-delay:120ms">≈7500</p>
+        <p class="fact__label">найменувань запчастин на складі</p>
+      </div>
+    </div>
+
+    <div class="facts__deals">
+      <h3 class="facts__h3">Знижки для клієнтів</h3>
+      <ul class="deals">
+        {discounts.map((d) => (
+          <li class="deal">
+            <span class="deal__v num">{d.v}</span>
+            <span class="deal__l">{d.l}</span>
+          </li>
+        ))}
+      </ul>
+      <p class="small muted facts__note">Умови знижок уточнюйте за телефоном. Консультація — безкоштовна.</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .facts { padding-block: var(--section-y); }
+  .facts__h2 { margin-bottom: var(--s-6); max-width: 14ch; }
+  .facts__big { display: grid; gap: var(--s-6); }
+  .fact__value {
+    font-family: var(--font-display); font-weight: 800; line-height: .9; letter-spacing: -0.04em; color: var(--color-brand);
+    white-space: nowrap; padding-bottom: .04em;
+  }
+  .fact--xl .fact__value { font-size: var(--fs-fact-xl); }
+  .fact--l .fact__value { font-size: var(--fs-fact-l); }
+  .fact__label { margin-top: var(--s-2); font-size: var(--fs-lead); line-height: 1.4; max-width: 20rem; }
+  .facts__deals { margin-top: var(--s-8); padding-top: var(--s-4); border-top: var(--border) solid var(--color-text); }
+  .facts__h3 { font-size: var(--fs-h3); line-height: 1.05; margin-bottom: var(--s-4); }
+  .deals { display: grid; gap: var(--s-3); }
+  .deal { display: grid; gap: 4px; }
+  .deal__v { font-family: var(--font-display); font-weight: 800; font-size: var(--fs-fact-m); line-height: 1; letter-spacing: -0.03em; }
+  .deal__l { color: var(--color-muted); }
+  .facts__note { margin-top: var(--s-4); }
+
+  @media (min-width: 768px) {
+    .deals { grid-template-columns: repeat(3, 1fr); gap: var(--gap); }
+  }
+  @media (min-width: 1024px) {
+    .facts__big { grid-template-columns: repeat(12, 1fr); column-gap: var(--gap); align-items: end; }
+    .fact--xl { grid-column: 1 / span 7; }
+    .fact--l { grid-column: 9 / span 4; padding-bottom: var(--s-2); }
+    .facts__deals { display: grid; grid-template-columns: repeat(12, 1fr); column-gap: var(--gap); margin-top: var(--s-12); }
+    .facts__h3 { grid-column: 1 / span 4; }
+    .deals { grid-column: 5 / span 8; }
+    .facts__note { grid-column: 5 / span 8; }
+  }
+</style>

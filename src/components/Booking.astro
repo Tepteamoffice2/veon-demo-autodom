@@ -1,0 +1,112 @@
+---
+// Form fields are shown; sending is not connected yet (demo.md §6): the button is inactive with a note, real phones sit next to it.
+import { phones, groups } from "../data/site";
+---
+<section id="booking" class="booking">
+  <div class="container booking__grid">
+    <div class="booking__intro">
+      <h2 class="h2">Запис на сервіс</h2>
+      <p class="lead muted">Залиште ім'я й телефон — або одразу наберіть нас. Розкажете, що з машиною, і домовимося про час.</p>
+    </div>
+
+    <aside class="booking__phones" aria-labelledby="fast-title" data-rec="R-102,MA-R005">
+      <h3 id="fast-title" class="booking__h3">Швидше — телефоном</h3>
+      <ul class="fast">
+        {phones.map((p) => (
+          <li>
+            <a class="fast__item" href={`tel:${p.tel}`}>
+              <span class="fast__num num">{p.display}</span>
+              <span class="fast__op">{p.operator}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+      <p class="small muted">Консультація безкоштовна.</p>
+    </aside>
+
+    <form class="form" id="booking-form" novalidate aria-describedby="form-note">
+      <div class="field">
+        <label for="f-name">Ім'я</label>
+        <input id="f-name" name="name" type="text" autocomplete="given-name" />
+      </div>
+      <div class="field">
+        <label for="f-phone">Телефон</label>
+        <input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" aria-describedby="f-phone-hint" />
+        <p id="f-phone-hint" class="field__hint small muted">Наприклад, +380 і ваш номер</p>
+      </div>
+      <div class="field">
+        <label for="f-need">Що потрібно <span class="muted">(необов'язково)</span></label>
+        <div class="select">
+          <select id="f-need" name="need">
+            <option value="">Оберіть напрям</option>
+            {groups.map((g) => <option value={g.id}>{g.title}</option>)}
+            <option value="other">Інше</option>
+          </select>
+          <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2.4" fill="none"/></svg>
+        </div>
+      </div>
+      <div class="form__send">
+        <button class="btn btn--lg form__btn" type="button" aria-disabled="true" aria-describedby="form-note">Надіслати заявку</button>
+        <p id="form-note" class="small muted form__note">Онлайн-заявка з'явиться в повній версії сайту. Поки що — телефоном.</p>
+      </div>
+    </form>
+  </div>
+</section>
+
+<style>
+  .booking { padding-block: var(--section-y); }
+  .booking__grid { display: grid; gap: var(--s-4); }
+  .booking__intro { display: grid; gap: var(--s-2); }
+  .booking__intro .lead { max-width: 34rem; }
+  .booking__h3 { font-size: var(--fs-h3); line-height: 1.05; margin-bottom: var(--s-3); }
+  .fast { display: grid; gap: var(--s-1); margin-bottom: var(--s-2); }
+  .fast__item {
+    display: flex; align-items: center; justify-content: space-between; gap: var(--s-2);
+    min-height: 64px; padding: 0 var(--s-3);
+    background: var(--color-brand); color: var(--color-on-brand); border-radius: var(--radius); text-decoration: none;
+    transition: background-color var(--dur-fast) var(--ease-out), transform 120ms var(--ease-out);
+  }
+  .fast__item:hover { background: var(--color-ink); }
+  .fast__item:active { transform: scale(.98); }
+  .fast__num { font-family: var(--font-display); font-weight: 750; font-size: clamp(1.125rem, 1rem + .6vw, 1.5rem); letter-spacing: -0.01em; white-space: nowrap; }
+  .fast__op { font-size: var(--fs-small); color: var(--color-on-brand-muted); }
+
+  .form {
+    display: grid; gap: var(--s-3);
+    padding: var(--s-4) var(--s-3);
+    background: var(--color-surface); border-radius: var(--radius);
+    box-shadow: var(--shadow-panel);
+  }
+  .field { display: grid; gap: var(--s-1); }
+  .field label { font-weight: 600; }
+  .field input, .field select {
+    width: 100%; min-height: 56px; padding: 0 var(--s-2);
+    font: inherit; color: var(--color-text);
+    background: var(--color-surface); border: var(--border) solid var(--color-line-strong); border-radius: var(--radius);
+    transition: border-color var(--dur-fast) var(--ease-out);
+  }
+  .field input:hover, .field select:hover { border-color: var(--color-text); }
+  .field input:focus-visible, .field select:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 2px; border-color: var(--color-brand); }
+  .select { position: relative; }
+  .select select { appearance: none; padding-right: var(--s-6); cursor: pointer; }
+  .select svg { position: absolute; right: var(--s-2); top: 50%; transform: translateY(-50%); pointer-events: none; color: var(--color-muted); }
+  .form__send { display: grid; gap: var(--s-1); justify-items: start; }
+  .form__btn {
+    background: var(--color-brand-tint); color: var(--color-muted); border: var(--border) dashed var(--color-line-strong);
+    cursor: not-allowed;
+  }
+  .form__btn:active { transform: none; }
+
+  @media (min-width: 1024px) {
+    .booking__grid { grid-template-columns: repeat(12, 1fr); column-gap: var(--gap); row-gap: var(--s-6); align-items: start; }
+    .booking__intro { grid-column: 1 / span 7; }
+    .form { grid-column: 1 / span 7; grid-row: 2; padding: var(--s-6); grid-template-columns: 1fr 1fr; column-gap: var(--gap); }
+    .form .field:nth-child(3), .form__send { grid-column: 1 / -1; }
+    .booking__phones { grid-column: 9 / span 4; grid-row: 2; }
+  }
+</style>
+
+<script>
+  // Sending is not connected in this version: Enter in a field must not reload the page.
+  document.getElementById("booking-form")?.addEventListener("submit", (e) => e.preventDefault());
+</script>

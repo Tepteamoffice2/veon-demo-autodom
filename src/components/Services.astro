@@ -1,0 +1,145 @@
+---
+import FutureLink from "./FutureLink.astro";
+import { groups, futureNote } from "../data/site";
+---
+<section id="services" class="services" data-rec="R-103">
+  <div class="container">
+    <div class="services__head">
+      <h2 class="h2">Що ремонтуємо</h2>
+      <p class="lead muted">П'ять напрямів, один цех. Не знайшли свою роботу в списку — подзвоніть: консультація безкоштовна.</p>
+    </div>
+
+    <ol class="index">
+      {groups.map((g, i) => (
+        <li class="row" data-acc>
+          <h3 class="row__title">
+            <button class="row__toggle" type="button" aria-expanded="true" aria-controls={`grp-${g.id}`} id={`grp-${g.id}-btn`}>
+              <span class="row__name">{g.title}</span>
+              <svg class="row__chev" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2.4" fill="none"/></svg>
+            </button>
+          </h3>
+          <div class="row__panel" id={`grp-${g.id}`} role="region" aria-labelledby={`grp-${g.id}-btn`}>
+            <p class="row__about muted small">{g.about}</p>
+            <ul class="row__list">
+              {g.items.map((it) => <li>{it}</li>)}
+            </ul>
+            <div class="row__cta">
+              <button class="btn btn--call" type="button" popovertarget="call-pop">Подзвонити<span class="row__cta-more">&nbsp;щодо {g.cta}</span></button>
+              <FutureLink note={futureNote} class="row__all">Усі роботи напряму</FutureLink>
+            </div>
+          </div>
+          <span class="row__arrow" aria-hidden="true">→</span>
+        </li>
+      ))}
+    </ol>
+
+    <p class="services__also small muted">
+      Також:
+      <FutureLink note={futureNote}>автозапчастини зі складу</FutureLink> і
+      <FutureLink note={futureNote}>страхування автомобіля</FutureLink>.
+    </p>
+  </div>
+</section>
+
+<style>
+  .services { padding-block: var(--section-y); }
+  .services__head { display: grid; gap: var(--s-2); margin-bottom: var(--s-6); }
+  .services__head .lead { max-width: 32rem; }
+
+  .index { list-style: none; margin: 0; padding: 0; border-bottom: var(--border) solid var(--color-text); }
+  .row { position: relative; border-top: var(--border) solid var(--color-text); }
+  .row__title { font-size: var(--fs-h3); line-height: 1.05; }
+  .row__toggle {
+    display: flex; align-items: center; justify-content: space-between; gap: var(--s-2);
+    width: 100%; min-height: 72px; padding: var(--s-2) 0;
+    background: none; border: 0; text-align: left; cursor: pointer;
+    font: inherit; letter-spacing: inherit; color: inherit;
+  }
+  .row__chev { flex: none; transition: transform var(--dur-fast) var(--ease-out); }
+  .row__toggle[aria-expanded="true"] .row__chev { transform: rotate(180deg); }
+  .row__panel { padding-bottom: var(--s-4); }
+  .row__about { margin-bottom: var(--s-2); }
+  .row__list { display: grid; gap: var(--s-1); font-size: var(--fs-body); }
+  .row__list li { padding-left: 1.1em; position: relative; }
+  .row__list li::before { content: "—"; position: absolute; left: 0; color: var(--color-muted); }
+  .row__cta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2) var(--s-3); margin-top: var(--s-3); }
+  .row__cta .btn { white-space: nowrap; gap: 0; }
+  @media (max-width: 479px) { .row__cta-more { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; } }
+  .row__cta :global(.row__all) { font-size: var(--fs-small); color: var(--color-muted); }
+  .row__arrow { display: none; }
+  .services__also { margin-top: var(--s-4); }
+  .services__also :global(.future-link) { color: var(--color-text); }
+
+  /* Accordion only once JS runs on narrow screens (no JS: everything open). */
+  .row__panel[hidden] { display: none; }
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.js) .row__panel.is-opening { animation: panel-in 220ms var(--ease-out); }
+  }
+  @keyframes panel-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+  @media (min-width: 768px) {
+    .services__head { grid-template-columns: repeat(12, 1fr); column-gap: var(--gap); align-items: end; }
+    .services__head .h2 { grid-column: 1 / span 6; }
+    .services__head .lead { grid-column: 8 / span 5; }
+    .row {
+      display: grid; grid-template-columns: repeat(12, 1fr); column-gap: var(--gap); row-gap: var(--s-2);
+      padding: var(--s-4) var(--s-2) var(--s-4) 0;
+      transition: background-color var(--dur-fast) var(--ease-out);
+    }
+    .row__title { grid-column: 1 / -1; white-space: nowrap; }
+    .row__toggle { pointer-events: none; min-height: 0; padding: 0; display: block; }
+    .row__name { display: inline-block; transition: transform var(--dur-fast) var(--ease-out); }
+    .row__chev { display: none; }
+    .row__panel, .row__panel[hidden] { display: grid; grid-column: 1 / span 11; padding: 0; grid-template-columns: 1fr 1fr; column-gap: var(--gap); }
+    .row__about { grid-column: 1 / -1; }
+    .row__list { grid-column: 1 / -1; grid-template-columns: 1fr 1fr; column-gap: var(--gap); }
+    .row__cta { grid-column: 1 / -1; }
+    .row__arrow {
+      display: block; position: absolute; right: var(--s-2); top: var(--s-4);
+      font-family: var(--font-display); font-size: var(--fs-h3); line-height: 1.05; color: var(--color-brand);
+      color: var(--color-line-strong); transform: translateX(-8px); transition: color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+    }
+    /* Effect 2: the row reacts — tint, title nudges 8px, arrow appears. */
+    .row:hover { background: var(--color-brand-tint); }
+    .row:hover .row__name { transform: translateX(8px); }
+    .row:hover .row__arrow { color: var(--color-brand); transform: none; }
+  }
+  @media (min-width: 1024px) {
+    .row { row-gap: 0; }
+    .row__title { grid-column: 1 / span 6; font-size: min(var(--fs-h3), 3.4vw); }
+    .row__panel, .row__panel[hidden] { grid-column: 7 / span 5; }
+    .row__list { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+
+<script>
+  // Mobile accordion: first group open, others collapsed. Desktop: all groups visible as an index.
+  const mq = window.matchMedia("(max-width: 767px)");
+  const rows = [...document.querySelectorAll<HTMLElement>("[data-acc]")];
+  const setup = () => {
+    rows.forEach((row, i) => {
+      const btn = row.querySelector<HTMLButtonElement>(".row__toggle")!;
+      const panel = row.querySelector<HTMLElement>(".row__panel")!;
+      const open = !mq.matches || i === 0;
+      btn.setAttribute("aria-expanded", String(open));
+      panel.hidden = !open;
+      btn.tabIndex = mq.matches ? 0 : -1;
+    });
+  };
+  rows.forEach((row) => {
+    const btn = row.querySelector<HTMLButtonElement>(".row__toggle")!;
+    const panel = row.querySelector<HTMLElement>(".row__panel")!;
+    btn.addEventListener("click", () => {
+      if (!mq.matches) return;
+      const open = btn.getAttribute("aria-expanded") !== "true";
+      btn.setAttribute("aria-expanded", String(open));
+      panel.hidden = !open;
+      if (open) {
+        panel.classList.add("is-opening");
+        panel.addEventListener("animationend", () => panel.classList.remove("is-opening"), { once: true });
+      }
+    });
+  });
+  setup();
+  mq.addEventListener("change", setup);
+</script>

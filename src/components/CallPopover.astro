@@ -1,0 +1,89 @@
+---
+// One operator chooser for every «Подзвонити» trigger (header, hero tail, services, bottom bar).
+// Native popover: works without JS (Esc, click outside, focus return); JS only places it next to the trigger on wide screens.
+import { phones } from "../data/site";
+---
+<div id="call-pop" class="call-pop" popover aria-labelledby="call-pop-title">
+  <div class="call-pop__head">
+    <p id="call-pop-title" class="call-pop__title">Оберіть оператора</p>
+    <button class="call-pop__close" type="button" popovertarget="call-pop" popovertargetaction="hide" aria-label="Закрити">
+      <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 4l12 12M16 4L4 16" stroke="currentColor" stroke-width="2"/></svg>
+    </button>
+  </div>
+  <ul class="call-pop__list">
+    {phones.map((p) => (
+      <li>
+        <a href={`tel:${p.tel}`} class="call-pop__item">
+          <span class="call-pop__num num">{p.display}</span>
+          <span class="call-pop__op">{p.operator}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+  <p class="call-pop__note">Консультація безкоштовна</p>
+</div>
+
+<style>
+  .call-pop {
+    --color-focus: var(--color-accent);
+    position: fixed; inset: auto 0 0 0; margin: 0; width: 100%; max-width: none;
+    padding: var(--s-3) var(--space) calc(var(--s-3) + env(safe-area-inset-bottom));
+    border: 0; border-radius: var(--radius) var(--radius) 0 0;
+    background: var(--color-ink); color: var(--color-on-brand);
+    box-shadow: var(--shadow-pop);
+    opacity: 0; transform: translateY(8px);
+    transition: opacity var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out), overlay var(--dur-fast) allow-discrete, display var(--dur-fast) allow-discrete;
+  }
+  .call-pop:popover-open { opacity: 1; transform: none; }
+  @starting-style { .call-pop:popover-open { opacity: 0; transform: translateY(8px); } }
+  .call-pop::backdrop { background: var(--color-backdrop); }
+  .call-pop__head { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--s-2); }
+  .call-pop__title { font-family: var(--font-display); font-weight: 700; font-size: 1.25rem; }
+  .call-pop__close { display: grid; place-items: center; width: var(--tap); height: var(--tap); margin-right: -12px; background: none; border: 0; border-radius: var(--radius); cursor: pointer; color: var(--color-on-brand); }
+  .call-pop__close:hover { background: var(--color-hover-on-dark); }
+  .call-pop__list { display: grid; gap: var(--s-1); }
+  .call-pop__item {
+    display: flex; align-items: center; justify-content: space-between; gap: var(--s-2);
+    min-height: 56px; padding: 0 var(--s-2);
+    background: var(--color-accent); color: var(--color-accent-ink); border-radius: var(--radius);
+    text-decoration: none; transition: background-color var(--dur-fast) var(--ease-out);
+  }
+  .call-pop__item:hover { background: var(--color-on-brand); }
+  .call-pop__num { font-family: var(--font-display); font-weight: 750; font-size: 1.25rem; }
+  .call-pop__op { font-size: var(--fs-small); font-weight: 500; }
+  .call-pop__note { margin-top: var(--s-2); font-size: var(--fs-small); color: var(--color-on-brand-muted); }
+
+  @media (min-width: 768px) {
+    .call-pop {
+      inset: calc(var(--header-h) + 8px) var(--space) auto auto;
+      width: 22rem; border-radius: var(--radius);
+      padding: var(--s-3);
+      transform: translateY(-4px);
+    }
+    @starting-style { .call-pop:popover-open { opacity: 0; transform: translateY(-4px); } }
+    .call-pop::backdrop { background: transparent; }
+  }
+</style>
+
+<script>
+  // Place the chooser under the button that opened it (wide screens only).
+  const pop = document.getElementById("call-pop");
+  let trigger: HTMLElement | null = null;
+  document.addEventListener("click", (e) => {
+    const t = (e.target as HTMLElement).closest<HTMLElement>('[popovertarget="call-pop"]');
+    if (t && !t.closest("#call-pop")) trigger = t;
+  }, true);
+  pop?.addEventListener("beforetoggle", (e) => {
+    const ev = e as ToggleEvent;
+    if (ev.newState !== "open" || !trigger || !pop) return;
+    if (window.innerWidth < 768) { pop.style.removeProperty("top"); pop.style.removeProperty("left"); pop.style.removeProperty("right"); return; }
+    const r = trigger.getBoundingClientRect();
+    const w = 352;
+    const left = Math.min(Math.max(16, r.left), window.innerWidth - w - 16);
+    let top = r.bottom + 8;
+    if (top + 320 > window.innerHeight) top = Math.max(16, r.top - 320 - 8);
+    pop.style.top = `${Math.round(top)}px`;
+    pop.style.left = `${Math.round(left)}px`;
+    pop.style.right = "auto";
+  });
+</script>
